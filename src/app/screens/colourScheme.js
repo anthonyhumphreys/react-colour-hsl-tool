@@ -31,6 +31,7 @@ class ColourScheme extends Component {
         <Segment style={{ margin: 15 }}>
           Select a Hue:
           <HuePicker
+            width="500px"
             onChange={this.handleHueChange}
             color={this.state.color}
           />
