@@ -1,19 +1,22 @@
 import React, { Component } from "react";
-import { TwitterPicker } from "react-color";
+import { TwitterPicker, HuePicker } from "react-color";
 import { Accordion, Button, Container, Grid, Header, Icon, Segment } from "semantic-ui-react";
-
+import Swatch from "../components/swatch";
+import SwatchRange from "../components/swatchRange"
 class ColourScheme extends Component {
   constructor(props) {
     super(props);
     this.state = {
       activeIndex: -1,
-      color: { h: 27, s: 0.83, l: 0.82, a: 1 },
+      color: { h: 27, s: "50%", l: "50%", a: 1 },
       colourScheme: {
         id: 0,
         color: { h: 209, s: 0.5, l: 0.5 },
       }
     };
-    this.onChangeColor = this.onChangeColor.bind(this);
+   
+    this.handleHueChange = this.handleHueChange.bind(this);
+   
   }
 
   generateHsl = baseColour => {
@@ -71,34 +74,36 @@ class ColourScheme extends Component {
       </div>
     );
   } 
-      
-  onChangeColor(color, event) {
-    this.setState({ color: color.hsl }, () => this.generateColorPickerForm());
+  
+  
+
+  handleHueChange(color, event){
+    color.hsl.h = Math.round(color.hsl.h);
+    color.hsl.s = 50 + "%";
+    color.hsl.l = 50 + "%";
+    color.hsl.a = 1;
+   
+    this.setState({color: color.hsl}, () => this.generateColorPickerForm());
   }
 
   render() {
     return (
       <Container fluid>
         <Segment style={{ margin: 15 }}>
+          Select a Hue:
+          <HuePicker
+            onChange={this.handleHueChange}
+            color={this.state.color}
+          />
+          Selected Hue:
+          <Swatch color={this.state.color}/>
+          
+          Calculated Range:
+          <SwatchRange startingPoint={this.state.color}/>
           <Accordion fluid styled>
             {this.generateColorPickerForm()}
           </Accordion>
-          <Segment basic style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <Header>Select a colour, or enter a hex value, to generate a palette</Header>
-            <TwitterPicker
-              width="315px"
-              color={this.state.color}
-              colors={['#f44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B']}
-              onChange={this.onChangeColor}
-            />
-            <Button
-              positive
-              large
-              style={{ marginTop: 30 }}
-            >
-              Save
-            </Button>
-          </Segment>
+          
         </Segment>
       </Container>
     );
