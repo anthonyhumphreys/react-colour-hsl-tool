@@ -14,9 +14,12 @@ class Swatch extends Component {
     }
 
     hslToHex(h, s, l) {
-        
-        s = s.replace("%", "");
-        l = l.replace("%", "");
+        if(typeof(s) === "string"){
+            s = s.replace("%", "");
+        }
+        if(typeof(l) === "string"){
+            l = l.replace("%", "");
+        }
         h /= 360;
         s /= 100;
         l /= 100;
@@ -47,22 +50,22 @@ class Swatch extends Component {
 
     render(){
         return(
-            <Container style={{border: "1px solid black", padding: "5px"}}>
-
+            <Container>
+            
             <div 
                 style={{
-                    margin: "15px",
-                    height: "50px",
-                    width: "100px",
+                    height: "200px",
+                    width: "100%",
                     backgroundColor: this.hslString(this.props.color),
-                    boxShadow: "2px 2px 2px 1px rgba(0, 0, 0, 0.4)",
+                    
                     color: "white"
                     
                 }}
                 >
-            </div>
+
             <p>{this.hslString(this.props.color)}</p>
             <p>{this.hslToHex(this.props.color.h,this.props.color.s,this.props.color.l)}</p>
+            </div>
             </Container>
         )
     }
